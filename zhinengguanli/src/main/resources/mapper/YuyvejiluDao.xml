@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.YuyvejiluDao">
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        a.id as id
+        ,a.ck_types as ckTypes
+        ,a.yh_types as yhTypes
+        ,a.ry_types as ryTypes
+        ,a.location as location
+        ,a.create_time as createTime
+        ,a.dayMax as dayMax
+        ,a.day as day
+    </sql>
+
+    <select id="selectListView" parameterType="map" resultType="com.entity.view.YuyvejiluView" >
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM Yuyvejilu  a
+        <where>
+            <if test=" params.ckTypes != '' and params.ckTypes != null and params.ckTypes != 'null' ">
+                and a.ck_types = #{params.ckTypes}
+            </if>
+            <if test=" params.yhTypes != '' and params.yhTypes != null">
+                and a.yh_types = #{params.yhTypes}
+            </if>
+            <if test=" params.ryTypes != '' and params.ryTypes != null">
+                and a.ry_types = #{params.ryTypes}
+            </if>
+            <if test=" params.location != '' and params.location != null and params.location != 'null' ">
+                and a.location like CONCAT('%',#{params.location},'%')
+            </if>
+            <if test=" params.day != '' and params.day != null and params.day != 'null' ">
+                and a.day = #{params.day}
+            </if>
+        </where>
+        order by a.id desc
+    </select>
+
+</mapper>
